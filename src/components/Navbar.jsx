@@ -65,19 +65,19 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
 
   return (
     <>
-      <div className={`${showHam ? "block" :  "hidden"} absolute top-[10%] left-[1%] z-20`}>
-        <ul className="hamnav flex flex-col gap-2 bg-gray-100 p-2 -mt-2 pb-2 w-[11rem]">
-          <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto" to="/" ><Home03Icon color="#000" /> Home</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto" to=""> <Github01Icon color="#000" /> Github</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <HelpCircleIcon color="#000" /> Help</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <Delete02Icon color="#000" /> Reset Canvas</Link>
+      <div className={`${showHam ? "block" : "hidden"} absolute top-[10%] left-[1%] z-20`}>
+        <ul className="hamnav flex flex-col gap-1 bg-gray-100 p-2 -mt-2 pb-2 w-[11rem]">
+          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto" to="/" ><Home03Icon color="#000" size={20} /> Home</Link>
+          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto" to=""> <Github01Icon color="#000" size={20} /> Github</Link>
+          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto"> <HelpCircleIcon color="#000" size={20} /> Help</Link>
+          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto"> <Delete02Icon color="#000" size={20} /> Reset Canvas</Link>
         </ul>
       </div>
 
 
       <div className="flex justify-between items-center mt-4 z-10">
 
-        <button onClick={() => { showhamdata() }} className="btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  ml-[1rem]"> {showHam ? <Cancel01Icon color="#000" /> : <Menu01Icon color="#000" />} </button>
+        <button onClick={() => { showhamdata() }} className="btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  ml-[1rem]"> {showHam ? <Cancel01Icon color="#000" size={20} /> : <Menu01Icon color="#000" size={20} />} </button>
 
         <div className="flex items-center gap-3 p-2 bg-white rounded-xl shadow border border-gray-200 w-fit mx-auto ">
 
@@ -85,7 +85,7 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
             <button
               key={tool.id}
               onClick={() => handleClick(tool)}
-              className={`p-2 rounded-lg transition-all relative
+              className={`p-1.5 rounded-lg transition-all relative
           ${activeTool === tool.id
                   ? "bg-indigo-200 text-indigo-600"
                   : "hover:bg-gray-100"}
