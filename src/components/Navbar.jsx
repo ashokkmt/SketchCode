@@ -132,7 +132,7 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
         </div>
 
         {/* <button  onClick={handleDownloadImage} className="z-10 btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  mr-[1rem]"> Save </button> */}
-        <button className="z-10 btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  mr-[1rem]"> Save </button>
+        {/* <button className="z-10 btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  mr-[1rem]"> Save </button> */}
 
       </div>
       <button className="rotate-[90deg] z-999 hover:transform hover:scale-[1.05] hover:right-[-0%] active:scale-[0.98] transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem] rounded-2xl absolute top-[42vh] right-[-1%] pt-[1rem]" onClick={() => editorCode()}>{!showEditor ? <ArrowDownDoubleIcon color="#000" /> : <ArrowUpDoubleIcon color="#000" />}</button>
