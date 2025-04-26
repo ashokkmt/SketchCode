@@ -327,7 +327,7 @@ export default function Projectpage() {
 
         try {
             const res = await axios.post("http://localhost:3000/recieve", DataSend);
-            console.log(res.data || "✅ Sent successfully");
+            console.log(res.data || "✅ Sent successfully", res);
         } catch (error) {
             console.log("❌ Not Sent Successfully", error.message);
         }
