@@ -387,6 +387,8 @@ export default function Projectpage() {
                     showEditor={showEditor}
                     setshowHam={setshowHam}
                     showHam={showHam}
+                    setEdges={setEdges}
+                    setNodes={setNodes}
                 />
 
 

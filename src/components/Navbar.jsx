@@ -33,7 +33,7 @@ const tools = [
 
 
 
-export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraserActive, setActiveTool, activeTool, setShowEditor, showEditor, setshowHam, showHam }) {
+export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraserActive, setActiveTool, activeTool, setShowEditor, showEditor, setshowHam, showHam, setEdges, setNodes }) {
 
   const handleClick = (tool) => {
     setActiveTool(tool.id);
@@ -62,6 +62,10 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
     setshowHam(!showHam);
   }
 
+  const resetCanvas = ()=>{
+    setEdges([]);
+    setNodes([]);
+  }
 
   return (
     <>
@@ -69,8 +73,7 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
         <ul className="hamnav flex flex-col gap-2 bg-gray-100 p-2 -mt-2 pb-2 w-[11rem]">
           <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto" to="/" ><Home03Icon color="#000" /> Home</Link>
           <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto" to=""> <Github01Icon color="#000" /> Github</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <HelpCircleIcon color="#000" /> Help</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <Delete02Icon color="#000" /> Reset Canvas</Link>
+          <Link onClick={resetCanvas} className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <Delete02Icon color="#000" /> Reset Canvas</Link>
         </ul>
       </div>
 
@@ -101,3 +104,6 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
     </>
   );
 }
+
+
+   {/* <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <HelpCircleIcon color="#000" /> Help</Link> */}
