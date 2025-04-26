@@ -2,9 +2,7 @@ import { Background, Controls, Handle, MarkerType, NodeResizer } from '@xyflow/r
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import '../styles/Projectpage.css'
 import '@xyflow/react/dist/style.css';
-import Navbar from './Navbar.jsx';
-
-import Editor from '@monaco-editor/react';
+import Navbar from './Navbar2.jsx';
 
 import {
     MiniMap,
@@ -15,7 +13,7 @@ import {
     addEdge,
 } from '@xyflow/react';
 import axios from 'axios';
-import langs from '../../languages.json'
+import Editorpage from './Editorpage.jsx';
 
 
 let i = 1;
@@ -36,6 +34,10 @@ export default function Projectpage() {
     const [showEditor, setShowEditor] = useState(false);
     const [selectedLang, setSelectedLang] = useState("cpp");
     const [showHam, setshowHam] = useState(false);
+
+    // //////
+    const [editorContent, setEditorContent] = useState("// Start coding here...");
+
 
 
 
@@ -300,7 +302,6 @@ export default function Projectpage() {
 
         const nodeConnections = {};
 
-
         edges.forEach(edge => {
             if (!nodeConnections[edge.source]) {
                 nodeConnections[edge.source] = [];
@@ -316,7 +317,6 @@ export default function Projectpage() {
             connections: nodeConnections[id] || []
         }));
 
-
         const DataSend = {
             data: nodeDataArray,
             language: {
@@ -324,12 +324,15 @@ export default function Projectpage() {
             }
         };
 
-
         try {
-            const res = await axios.post("http://localhost:3000/recieve", DataSend);
-            console.log(res.data || "✅ Sent successfully", res);
+            const res = await axios.post("https://sketchcodebackend.onrender.com/recieve", DataSend);
+            console.log(res.data);
+
+            if (res.data) {
+                setEditorContent(res.data.result || res.data.error); 
+            }
         } catch (error) {
-            console.log("❌ Not Sent Successfully", error.message);
+            console.log("❌ Not Sent Successfully", error);
         }
     };
 
@@ -387,43 +390,16 @@ export default function Projectpage() {
                 />
 
 
-                <div className={`${showEditor ? "editbox2" : ""} editorBox absolute flex flex-col gap-3 bg-white shadow-2xl w-[40%] h-[80%] z-20 rounded-2xl top-[10%]  p-4 transition-position duration-400 ease-in-out`}>
-
-                    <div className='bg-gray-100 rounded-lg p-2'>
-                        <select
-                            onClick={changetoolpath}
-                            name="Language"
-                            id="lang-select"
-                            value={selectedLang}
-                            onChange={(e) => setSelectedLang(e.target.value)}
-                            className='w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400'
-                        >
-                            {selectedLang === "cpp" && (
-                                <option value="cpp" hidden>{selectedLang}</option>
-                            )}
-                            {
-                                langs.map((lang, key) => {
-                                    return (
-                                        <option key={key} value={lang}>{lang}</option>
-                                    )
-                                })
-                            }
-
-                        </select>
-                    </div>
-
-                    <div className='relative w-full flex-1 rounded-lg overflow-hidden'>
-                        <Editor
-                            theme="vs-dark"
-                            height="100%"
-                            width="100%"
-                            language={selectedLang}
-                            defaultValue="// Start coding here..."
-                            className='rounded-lg'
-                            onMount={showEditor ? mountEditor : undefined}
-                        />
-                    </div>
-                </div>
+                <Editorpage
+                    showEditor={showEditor}
+                    changetoolpath={changetoolpath}
+                    selectedLang={selectedLang}
+                    setSelectedLang={setSelectedLang}
+                    sendFlowBackend={sendFlowBackend}
+                    editorContent={editorContent}
+                    setEditorContent={setEditorContent}
+                    mountEditor={mountEditor}
+                />
 
 
 
