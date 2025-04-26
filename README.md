@@ -1,4 +1,4 @@
-# Flow 2 Code
+# SketchCode
 
 This is  site to make Flow Chart and simountanously convert that flow chart to code in any language..
 
