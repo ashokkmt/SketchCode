@@ -16,7 +16,7 @@ export default function Editorpage({ showEditor, changetoolpath, selectedLang, s
     };
 
     return (
-        <div className={`${showEditor ? "editbox2" : ""} editorBox absolute flex flex-col gap-3 bg-white shadow-2xl w-[40%] h-[80%] z-20 rounded-2xl top-[10%]  p-4 transition-position duration-400 ease-in-out `}>
+        <div className={`${showEditor ? "editbox2" : ""} editorBox absolute flex flex-col gap-3 bg-white shadow-2xl w-[40%] h-[80%] z-10 rounded-2xl top-[10%]  p-4 transition-position duration-400 ease-in-out `}>
 
             <div className=' rounded-lg p-2 flex justify-between'>
                 <select
@@ -42,7 +42,7 @@ export default function Editorpage({ showEditor, changetoolpath, selectedLang, s
 
                 <div className='flex gap-[2rem]'>
                     <button  onClick={copyContent} className='hover:bg-gray-200 pl-[.5rem] pr-[.5rem] rounded-[10px]' > <Copy01Icon color="#000" /> </button>
-                    <button onClick={sendFlowBackend} className="flex items-center justify-center gap-2 font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full px-6 py-2 shadow-lg transition-all duration-300 ease-in-out"> Run </button>
+                    <button onClick={sendFlowBackend} className="flex items-center justify-center gap-2 font-semibold text-white bg-orange-400 focus:outline-none hover:scale-[1.05] active:scale-[0.98]  rounded-full px-6 py-2 shadow-lg transition-all duration-300 ease-in-out"> Run </button>
                 </div>
 
             </div>
