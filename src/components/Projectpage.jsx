@@ -49,7 +49,7 @@ export default function Projectpage() {
             editorRef.current.focus();
         }
     }, [showEditor]);
-    
+
 
     const changetoolpath = () => {
         setSelectedShape(!selectedshape)
@@ -353,9 +353,9 @@ export default function Projectpage() {
                                 <option value="cpp" hidden>{selectedLang}</option>
                             )}
                             {
-                                langs.map((lang) => {
+                                langs.map((lang, key) => {
                                     return (
-                                        <option value={lang}>{lang}</option>
+                                        <option key={key} value={lang}>{lang}</option>
                                     )
                                 })
                             }
