@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
     z-index: 999;
 }
 
@@ -38,7 +39,7 @@
     border-radius: 50%;
     justify-content: center;
     align-items: center;
-    font-weight: 500;
+    font-weight: bold;
     text-wrap: nowrap;
 }
 
@@ -87,7 +88,6 @@
     height: 100%;
     width: auto;
     text-wrap: nowrap;
-    font-weight: 500;
     padding: 1rem 2rem;
 }
 
@@ -139,6 +139,7 @@
 
 .editorBox{
     right: -100%;
+    box-shadow: 0 0 12px -3px #4c4c4cd4;
 }
 
 .editbox2{

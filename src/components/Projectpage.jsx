@@ -35,15 +35,16 @@ export default function Projectpage() {
     const [isEraserActive, setIsEraserActive] = useState(false);
     const [showEditor, setShowEditor] = useState(false);
     const [selectedLang, setSelectedLang] = useState("cpp");
+    const [showHam, setshowHam] = useState(false);
 
 
-    
+
     const editorRef = useRef();
 
     const mountEditor = (editor) => {
         editorRef.current = editor;
     };
-    
+
     useEffect(() => {
         if (showEditor && editorRef.current) {
             editorRef.current.focus();
@@ -187,6 +188,50 @@ export default function Projectpage() {
         }
     }, [setEdges]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Delete') {
+                const selectedNodeIds = [];
+
+                // Find selected node ids using a for loop
+                for (let j = 0; j < nodes.length; j++) {
+                    if (nodes[j].selected) {
+                        selectedNodeIds.push(nodes[j].id);
+                    }
+                }
+
+                if (selectedNodeIds.length > 0) {
+                    // Remove selected nodes using for loop
+                    setNodes((prevNodes) => {
+                        const newNodes = [];
+                        for (let i = 0; i < prevNodes.length; i++) {
+                            if (!selectedNodeIds.includes(prevNodes[i].id)) {
+                                newNodes.push(prevNodes[i]);
+                            }
+                        }
+                        return newNodes;
+                    });
+
+                    // Remove related edges using for loop
+                    setEdges((prevEdges) => {
+                        const newEdges = [];
+                        for (let i = 0; i < prevEdges.length; i++) {
+                            const edge = prevEdges[i];
+                            if (!selectedNodeIds.includes(edge.source) && !selectedNodeIds.includes(edge.target)) {
+                                newEdges.push(edge);
+                            }
+                        }
+                        return newEdges;
+                    });
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [nodes, edges]);
 
 
 
@@ -208,6 +253,8 @@ export default function Projectpage() {
                 setEdges((eds) => eds.filter((edge) =>
                     !selectedNodeIds.includes(edge.source) && !selectedNodeIds.includes(edge.target)
                 ));
+
+
             }
         } else {
             onNodesChange(changes);
@@ -268,28 +315,19 @@ export default function Projectpage() {
             position,
             connections: nodeConnections[id] || []
         }));
-    
-    
+
+
         const DataSend = {
             data: nodeDataArray,
             language: {
                 name: selectedLang === "cpp" ? "c++" : selectedLang
             }
         };
-        
-        // On Local
-        // try {
-        //     const res = await axios.post("http://localhost:3000/recieve", DataSend);
-        //     console.log(res.data || "✅ Sent successfully");
-        // } catch (error) {
-        //     console.log("❌ Not Sent Successfully", error.message);
-        // }
 
 
-        // On Production
         try {
-            const res = await axios.post("https://sketchcodebackend.onrender.com/recieve", DataSend);
-            console.log(res.data || "✅ Sent successfully");
+            const res = await axios.post("http://localhost:3000/recieve", DataSend);
+            console.log(res.data || "✅ Sent successfully", res);
         } catch (error) {
             console.log("❌ Not Sent Successfully", error.message);
         }
@@ -328,7 +366,7 @@ export default function Projectpage() {
         return New_Data;
     }
 
-    
+
 
     return (
         <>
@@ -344,6 +382,8 @@ export default function Projectpage() {
                     activeTool={activeTool}
                     setShowEditor={setShowEditor}
                     showEditor={showEditor}
+                    setshowHam={setshowHam}
+                    showHam={showHam}
                 />
 
 

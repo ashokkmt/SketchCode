@@ -1,3 +1,6 @@
 @import "tailwindcss";
 
 
+.hamnav, .btn-ham{
+    border-radius: 10px;
+}
