@@ -17,6 +17,7 @@ import {
 } from "hugeicons-react";
 import { Link } from "react-router-dom";
 import '../styles/Navbar.css'
+// import { toPng } from 'html-to-image';
 
 const tools = [
   { id: "hand", icon: <Hold03Icon color="#000" />, hold: true },
@@ -78,6 +79,23 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
     setshowHam(false)
   };
 
+
+  // const handleDownloadImage = async () => {
+  //   const node = document.getElementById('saveImage'); 
+  //   if (!node) return;
+
+  //   try {
+  //     const dataUrl = await toPng(node);
+  //     const link = document.createElement('a');
+  //     link.download = 'my-image.png';
+  //     link.href = dataUrl;
+  //     link.click();
+  //   } catch (error) {
+  //     console.error('Error saving image', error);
+  //   }
+  // };
+
+
   return (
     <>
 
@@ -85,7 +103,7 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
 
       <div className="relative flex justify-between items-center mt-4 z-1">
 
-        <div className={`${showHam ? "block" : "hidden"} absolute top-[9vh] left-[2%] z-1`}>
+        <div className={`${showHam ? "block" : "hidden"} absolute top-[9vh] left-[1%] z-1`}>
           <ul className="hamnav flex flex-col gap-2 bg-gray-100 p-2 -mt-2 pb-2 w-[11rem] z-1">
             <li onClick={resethome} className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"  ><Home03Icon color="#000" /> Home</li>
             <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto" to="https://github.com/ashokkmt/SketchCode" target='_blank' rel="noopener noreferrer" > <Github01Icon color="#000" /> Github</Link>
@@ -104,8 +122,8 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
               onClick={() => handleClick(tool)}
               className={`p-2 rounded-lg transition-all relative
           ${activeTool === tool.id
-                  ? "bg-indigo-200 text-indigo-600"
-                  : "hover:bg-gray-100"}
+                  ? "bg-orange-300"
+                  : "hover:bg-orange-100"}
             `}
             >
               {tool.icon}
@@ -113,10 +131,14 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
           ))}
         </div>
 
-        <button className="rotate-[90deg] z-999 hover:transform hover:scale-[1.05] hover:right-[-0%] active:scale-[0.98] transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem] rounded-2xl absolute top-[42vh] right-[-1%] pt-[1rem]" onClick={() => editorCode()}>{!showEditor ? <ArrowDownDoubleIcon color="#000" /> : <ArrowUpDoubleIcon color="#000" />}</button>
+        {/* <button  onClick={handleDownloadImage} className="z-10 btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  mr-[1rem]"> Save </button> */}
+        <button className="z-10 btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  mr-[1rem]"> Save </button>
 
       </div>
+      <button className="rotate-[90deg] z-999 hover:transform hover:scale-[1.05] hover:right-[-0%] active:scale-[0.98] transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem] rounded-2xl absolute top-[42vh] right-[-1%] pt-[1rem]" onClick={() => editorCode()}>{!showEditor ? <ArrowDownDoubleIcon color="#000" /> : <ArrowUpDoubleIcon color="#000" />}</button>
     </>
   );
 }
+
+// react-flow__renderer
 

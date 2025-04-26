@@ -145,3 +145,12 @@
 .editbox2{
     right: 0;
 }
+
+
+.IMAGE{
+    position: absolute;
+    bottom: .5rem;
+    width: 100%;
+    height: 100vh;
+    object-fit:fill;
+}

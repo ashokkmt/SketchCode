@@ -35,15 +35,11 @@ export default function Projectpage() {
     const [selectedLang, setSelectedLang] = useState("cpp");
     const [showHam, setshowHam] = useState(false);
     const [editorContent, setEditorContent] = useState("// Start coding here...");
-
     const [showFrontPage, setShowFrontPage] = useState(true);
 
 
 
-
-
     const editorRef = useRef();
-
     const mountEditor = (editor) => {
         editorRef.current = editor;
     };
@@ -340,7 +336,6 @@ export default function Projectpage() {
     };
 
 
-
     const reteriveData = () => {
         const nodeMap = Object.fromEntries(nodes.map((node) => [node.id, node]));  // node object created
         const incommingMapEdge = {}
@@ -377,15 +372,7 @@ export default function Projectpage() {
     return (
         <>
 
-            <div className='relative mainbody bg-white'>
-
-                {showFrontPage && (
-                    <div className=' absolute top-0 w-[100%] h-[100%] z-0 flex justify-center items-center'>
-                        this is page
-                    </div>
-                )}
-
-
+            <div id='saveImage' className='relative mainbody bg-white'>
 
                 <Navbar
                     setSelectedShape={setSelectedShape}
@@ -404,6 +391,7 @@ export default function Projectpage() {
                 />
 
 
+
                 <Editorpage
                     showEditor={showEditor}
                     changetoolpath={changetoolpath}
@@ -418,6 +406,14 @@ export default function Projectpage() {
 
 
                 <div style={{ width: "100%", height: "89vh", padding: "1px" }} >
+
+                {showFrontPage && (
+                    <div className='w-[100%] '>
+                        <div>
+                            <img className='IMAGE' src="home_page.png" alt="Pen" />
+                        </div>
+                    </div>
+                )}  
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
