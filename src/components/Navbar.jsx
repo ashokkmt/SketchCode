@@ -13,7 +13,6 @@ import {
   Cancel01Icon,
   Home03Icon,
   Github01Icon,
-  HelpCircleIcon,
   Delete02Icon
 } from "hugeicons-react";
 import { Link } from "react-router-dom";
@@ -33,10 +32,14 @@ const tools = [
 
 
 
-export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraserActive, setActiveTool, activeTool, setShowEditor, showEditor, setshowHam, showHam }) {
+export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraserActive, setActiveTool, activeTool, setShowEditor, showEditor, setshowHam, showHam, setEdges, setNodes, setShowFrontPage }) {
 
   const handleClick = (tool) => {
     setActiveTool(tool.id);
+
+    if (tool !== "pointer") {
+      setShowFrontPage(false);
+    }
 
     if (tool.shape) {
       setSelectedShape(true);
@@ -62,22 +65,36 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
     setshowHam(!showHam);
   }
 
+  const resetCanvas = () => {
+    setEdges([]);
+    setNodes([]);
+    setshowHam(false)
+  }
+
+  const resethome = () => {
+    resetCanvas();
+    setShowFrontPage(true);
+    setActiveTool("pointer");
+    setshowHam(false)
+  };
 
   return (
     <>
-      <div className={`${showHam ? "block" : "hidden"} absolute top-[10%] left-[1%] z-20`}>
-        <ul className="hamnav flex flex-col gap-1 bg-gray-100 p-2 -mt-2 pb-2 w-[11rem]">
-          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto" to="/" ><Home03Icon color="#000" size={20} /> Home</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto" to=""> <Github01Icon color="#000" size={20} /> Github</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto"> <HelpCircleIcon color="#000" size={20} /> Help</Link>
-          <Link className="hover:bg-gray-300 p-2 font-normal text-[16px] rounded-md flex gap-2 justify-self-auto"> <Delete02Icon color="#000" size={20} /> Reset Canvas</Link>
-        </ul>
-      </div>
 
 
-      <div className="flex justify-between items-center mt-4 z-10">
 
-        <button onClick={() => { showhamdata() }} className="btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  ml-[1rem]"> {showHam ? <Cancel01Icon color="#000" size={20} /> : <Menu01Icon color="#000" size={20} />} </button>
+      <div className="relative flex justify-between items-center mt-4 z-1">
+
+        <div className={`${showHam ? "block" : "hidden"} absolute top-[9vh] left-[2%] z-1`}>
+          <ul className="hamnav flex flex-col gap-2 bg-gray-100 p-2 -mt-2 pb-2 w-[11rem] z-1">
+            <li onClick={resethome} className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"  ><Home03Icon color="#000" /> Home</li>
+            <Link className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto" to="https://github.com/ashokkmt/SketchCode" target='_blank' rel="noopener noreferrer" > <Github01Icon color="#000" /> Github</Link>
+            <Link onClick={resetCanvas} className="hover:bg-gray-300 p-2 font-normal rounded-md flex gap-2 justify-self-auto"> <Delete02Icon color="#000" /> Reset Canvas</Link>
+          </ul>
+        </div>
+
+
+        <button onClick={() => { showhamdata() }} className="z-10 btn-ham hover:transform transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem]  ml-[1rem]"> {showHam ? <Cancel01Icon color="#000" /> : <Menu01Icon color="#000" />} </button>
 
         <div className="flex items-center gap-3 p-2 bg-white rounded-xl shadow border border-gray-200 w-fit mx-auto ">
 
@@ -85,7 +102,7 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
             <button
               key={tool.id}
               onClick={() => handleClick(tool)}
-              className={`p-1.5 rounded-lg transition-all relative
+              className={`p-2 rounded-lg transition-all relative
           ${activeTool === tool.id
                   ? "bg-indigo-200 text-indigo-600"
                   : "hover:bg-gray-100"}
@@ -95,9 +112,11 @@ export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraser
             </button>
           ))}
         </div>
-        <button className="rotate-[90deg] z-999 hover:transform hover:scale-[1.05] hover:right-[-0%] active:scale-[0.98] transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem] rounded-2xl absolute top-[45%] right-[-1%] pt-[1rem]" onClick={() => editorCode()}>{!showEditor ? <ArrowDownDoubleIcon color="#000" /> : <ArrowUpDoubleIcon color="#000" />}</button>
+
+        <button className="rotate-[90deg] z-999 hover:transform hover:scale-[1.05] hover:right-[-0%] active:scale-[0.98] transition-all duration-300 ease-in-out cursor-pointer self-start bg-gray-100 hover:bg-gray-200 p-[.6rem] rounded-2xl absolute top-[42vh] right-[-1%] pt-[1rem]" onClick={() => editorCode()}>{!showEditor ? <ArrowDownDoubleIcon color="#000" /> : <ArrowUpDoubleIcon color="#000" />}</button>
 
       </div>
     </>
   );
 }
+
