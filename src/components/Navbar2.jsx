@@ -33,7 +33,7 @@ const tools = [
 
 
 
-export default function MinimalToolbar({ setSelectedShape, setShape, sendFlowBackend, setIsEraserActive, setActiveTool, activeTool, setShowEditor, showEditor, setshowHam, showHam }) {
+export default function MinimalToolbar({ setSelectedShape, setShape, setIsEraserActive, setActiveTool, activeTool, setShowEditor, showEditor, setshowHam, showHam }) {
 
   const handleClick = (tool) => {
     setActiveTool(tool.id);
@@ -56,7 +56,6 @@ export default function MinimalToolbar({ setSelectedShape, setShape, sendFlowBac
       return
     }
     setShowEditor(true)
-    sendFlowBackend();
   }
 
   const showhamdata = () => {
