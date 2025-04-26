@@ -34,9 +34,10 @@ export default function Projectpage() {
     const [showEditor, setShowEditor] = useState(false);
     const [selectedLang, setSelectedLang] = useState("cpp");
     const [showHam, setshowHam] = useState(false);
-
-    // //////
     const [editorContent, setEditorContent] = useState("// Start coding here...");
+
+    const [showFrontPage, setShowFrontPage] = useState(true);
+
 
 
 
@@ -74,6 +75,8 @@ export default function Projectpage() {
     );
 
     const makeNode = useCallback((event) => {
+
+        setshowHam(false)
 
         if (!selectedshape) {
             return
@@ -329,7 +332,7 @@ export default function Projectpage() {
             console.log(res.data);
 
             if (res.data) {
-                setEditorContent(res.data.result || res.data.error); 
+                setEditorContent(res.data.result || res.data.error);
             }
         } catch (error) {
             console.log("❌ Not Sent Successfully", error);
@@ -376,6 +379,14 @@ export default function Projectpage() {
 
             <div className='relative mainbody bg-white'>
 
+                {showFrontPage && (
+                    <div className=' absolute top-0 w-[100%] h-[100%] z-0 flex justify-center items-center'>
+                        this is page
+                    </div>
+                )}
+
+
+
                 <Navbar
                     setSelectedShape={setSelectedShape}
                     setShape={setshape}
@@ -389,6 +400,7 @@ export default function Projectpage() {
                     showHam={showHam}
                     setEdges={setEdges}
                     setNodes={setNodes}
+                    setShowFrontPage={setShowFrontPage}
                 />
 
 
