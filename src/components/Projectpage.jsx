@@ -2,7 +2,7 @@ import { Background, Controls, Handle, MarkerType, NodeResizer } from '@xyflow/r
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import '../styles/Projectpage.css'
 import '@xyflow/react/dist/style.css';
-import Navbar from './Navbar2.jsx';
+import Navbar from './Navbar.jsx';
 
 import {
     MiniMap,
