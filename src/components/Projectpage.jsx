@@ -37,8 +37,19 @@ export default function Projectpage() {
     const [selectedLang, setSelectedLang] = useState("cpp");
 
 
+    
+    const editorRef = useRef();
 
-
+    const mountEditor = (editor) => {
+        editorRef.current = editor;
+    };
+    
+    useEffect(() => {
+        if (showEditor && editorRef.current) {
+            editorRef.current.focus();
+        }
+    }, [showEditor]);
+    
 
     const changetoolpath = () => {
         setSelectedShape(!selectedshape)
@@ -308,7 +319,7 @@ export default function Projectpage() {
         return New_Data;
     }
 
-
+    
 
     return (
         <>
@@ -360,6 +371,7 @@ export default function Projectpage() {
                             language={selectedLang}
                             defaultValue="// Start coding here..."
                             className='rounded-lg'
+                            onMount={showEditor ? mountEditor : undefined}
                         />
                     </div>
                 </div>
