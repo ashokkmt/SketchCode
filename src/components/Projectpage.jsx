@@ -329,20 +329,12 @@ export default function Projectpage() {
             console.log(res.data);
 
             if (res.data) {
-                const resut = trimcontent(res.data.result)
-                // setEditorContent(res.data.result || res.data.error); 
-                setEditorContent(resut);
+                setEditorContent(res.data.result || res.data.error); 
             }
         } catch (error) {
             console.log("❌ Not Sent Successfully", error);
         }
     };
-
-    function trimcontent(ress) {
-        const lines = ress.split("\n");
-        const trimmedLines = lines.slice(1, -1);
-        return trimmedLines.join("\n").trim();
-    }
 
 
 
