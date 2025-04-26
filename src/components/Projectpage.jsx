@@ -103,13 +103,22 @@ export default function Projectpage() {
 
     }, [setNodes, shape, selectedshape])
 
+    const handleStyle = {
+        width: "16px",
+        height: "16px",
+        background: "#6b686854",
+        border: "3px solid #6b686854",
+        zIndex: 10,
+    };
+
+    
 
     const nodetype = {
         custom: ({ data, selected }) => {
             return (
                 <>
                     <NodeResizer
-                        color="#7f56d9"
+                        color="#ff8f3e"
                         isVisible={selected}
                         minWidth={160}
                         minHeight={50}
@@ -117,17 +126,102 @@ export default function Projectpage() {
 
                     <div className={`${nodeSelect === data.id ? 'AddBorder' : ''} nowheel custom-node ${data.shape}`}>
 
-                        <Handle style={data.shape === "diamond" ? { top: "-19%" } : {}} type="source" position={Position.Top} id="t-source" isConnectableStart={true} isConnectableEnd={false} />
-                        <Handle style={data.shape === "diamond" ? { top: "-19%" } : {}} type="target" position={Position.Top} id="t-target" isConnectableStart={false} isConnectableEnd={true} />
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { left: "100%" } : {})
+                            }}
+                            type="source"
+                            position={Position.Top}
+                            id="t-source"
+                            isConnectableStart={true}
+                            isConnectableEnd={false}
+                        />
 
-                        <Handle style={data.shape === "diamond" ? { left: "-19%" } : {}} type="source" position={Position.Left} id="l-source" isConnectableStart={true} isConnectableEnd={false} />
-                        <Handle style={data.shape === "diamond" ? { left: "-19%" } : {}} type="target" position={Position.Left} id="l-target" isConnectableStart={false} isConnectableEnd={true} />
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { left: "100%" } : {})
+                            }}
+                            type="target"
+                            position={Position.Top}
+                            id="t-target"
+                            isConnectableStart={false}
+                            isConnectableEnd={true}
+                        />
 
-                        <Handle style={data.shape === "diamond" ? { bottom: "-19%" } : {}} type="source" position={Position.Bottom} id="b-source" isConnectableStart={true} isConnectableEnd={false} />
-                        <Handle style={data.shape === "diamond" ? { bottom: "-19%" } : {}} type="target" position={Position.Bottom} id="b-target" isConnectableStart={false} isConnectableEnd={true} />
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { top: "0%" } : {})
+                            }}
+                            type="source"
+                            position={Position.Left}
+                            id="l-source"
+                            isConnectableStart={true}
+                            isConnectableEnd={false}
+                        />
 
-                        <Handle style={data.shape === "diamond" ? { right: "-19%" } : {}} type="source" position={Position.Right} id="r-source" isConnectableStart={true} isConnectableEnd={false} />
-                        <Handle style={data.shape === "diamond" ? { right: "-19%" } : {}} type="target" position={Position.Right} id="r-target" isConnectableStart={false} isConnectableEnd={true} />
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { top: "0%" } : {})
+                            }}
+                            type="target"
+                            position={Position.Left}
+                            id="l-target"
+                            isConnectableStart={false}
+                            isConnectableEnd={true}
+                        />
+
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { left: "100%" } : {})
+                            }}
+                            type="source"
+                            position={Position.Bottom}
+                            id="b-source"
+                            isConnectableStart={true}
+                            isConnectableEnd={false}
+                        />
+
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { left: "100%" } : {})
+                            }}
+                            type="target"
+                            position={Position.Bottom}
+                            id="b-target"
+                            isConnectableStart={false}
+                            isConnectableEnd={true}
+                        />
+
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { left: "-8%", top: "101%" } : {})
+                            }}
+                            type="source"
+                            position={Position.Right}
+                            id="r-source"
+                            isConnectableStart={true}
+                            isConnectableEnd={false}
+                        />
+
+                        <Handle
+                            style={{
+                                ...handleStyle,
+                                ...(data.shape === "diamond" ? { left: "-8%", top: "101%" } : {})
+                            }}
+                            type="target"
+                            position={Position.Right}
+                            id="r-target"
+                            isConnectableStart={false}
+                            isConnectableEnd={true}
+                        />
+
 
                         {
                             editingNode === data.id ? (
@@ -407,13 +501,13 @@ export default function Projectpage() {
 
                 <div style={{ width: "100%", height: "89vh", padding: "1px" }} >
 
-                {showFrontPage && (
-                    <div className='w-[100%] '>
-                        <div>
-                            <img className='IMAGE' src="home_page.png" alt="Pen" />
+                    {showFrontPage && (
+                        <div className='w-[100%] '>
+                            <div>
+                                <img className='IMAGE' src="home_page.png" alt="Pen" />
+                            </div>
                         </div>
-                    </div>
-                )}  
+                    )}
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
