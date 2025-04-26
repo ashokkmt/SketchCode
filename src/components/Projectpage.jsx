@@ -1,8 +1,10 @@
 import { Background, Controls, Handle, MarkerType, NodeResizer } from '@xyflow/react'
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 import '../styles/Projectpage.css'
 import '@xyflow/react/dist/style.css';
 import Navbar from './Navbar2.jsx';
+
+import Editor from '@monaco-editor/react';
 
 import {
     MiniMap,
@@ -13,6 +15,7 @@ import {
     addEdge,
 } from '@xyflow/react';
 import axios from 'axios';
+import langs from '../../languages.json'
 
 
 let i = 1;
@@ -26,12 +29,20 @@ export default function Projectpage() {
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [selectedshape, setSelectedShape] = useState(false)
     const [shape, setshape] = useState("")
-    const [pressdelete, setpressdelete] = useState(false)
     const [nodeSelect, setnodeSelect] = useState(null)
     const [activeTool, setActiveTool] = useState("pointer");
-
-
     const [editingNode, setEditingNode] = useState(null);
+    const [isEraserActive, setIsEraserActive] = useState(false);
+    const [showEditor, setShowEditor] = useState(false);
+    const [selectedLang, setSelectedLang] = useState("cpp");
+
+
+
+
+
+    const changetoolpath = () => {
+        setSelectedShape(!selectedshape)
+    }
 
     const onConnect = useCallback(
         (params) => {
@@ -144,37 +155,84 @@ export default function Projectpage() {
         }
     )
 
+
+    const eraserActiveRef = useRef(isEraserActive);
+
     useEffect(() => {
-        if (!pressdelete) return;
+        eraserActiveRef.current = isEraserActive;
+    }, [isEraserActive]);
 
-        const selectedNodeIds = [];
-        const newNodes = [];
-        for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i].selected) {
-                selectedNodeIds.push(nodes[i].id);
-            } else {
-                newNodes.push(nodes[i]);
-            }
+
+
+    const onEdgesChangeWrapper = useCallback((changes) => {
+        onEdgesChange(changes); // simple, no special eraser logic here
+    }, [onEdgesChange]);
+
+
+    const onEdgeClick = useCallback((event, edge) => {
+        if (eraserActiveRef.current) {
+            event.stopPropagation(); // prevent selecting it
+            setEdges((eds) => eds.filter((e) => e.id !== edge.id));
         }
+    }, [setEdges]);
 
-        const newEdges = [];
-        for (let i = 0; i < edges.length; i++) {
-            const e = edges[i];
-            const isSelected = e.selected;
-            const isConnected = selectedNodeIds.includes(e.source) || selectedNodeIds.includes(e.target);
-            if (!isSelected && !isConnected) {
-                newEdges.push(e);
+
+
+
+
+    const onNodesChangeWrapper = useCallback((changes) => {
+        if (isEraserActive) {
+            const selectedNodeIds = [];
+
+            // Collect selected node IDs
+            changes.forEach((change) => {
+                if (change.type === 'select' && change.selected) {
+                    selectedNodeIds.push(change.id);
+                }
+            });
+
+            if (selectedNodeIds.length > 0) {
+                // Delete selected nodes and their corresponding edges
+                setNodes((nds) => nds.filter((node) => !selectedNodeIds.includes(node.id)));
+                setEdges((eds) => eds.filter((edge) =>
+                    !selectedNodeIds.includes(edge.source) && !selectedNodeIds.includes(edge.target)
+                ));
             }
+        } else {
+            onNodesChange(changes);
         }
+    }, [isEraserActive, onNodesChange, setNodes, setEdges]);
 
-        setNodes(newNodes);
-        setEdges(newEdges);
-        setpressdelete(false);
-    }, [pressdelete]);
+
+
+    useEffect(() => {
+        if (!isEraserActive) return;
+
+        const selectedNodeIds = nodes.filter((n) => n.selected).map((n) => n.id);
+        if (selectedNodeIds.length === 0) return;
+
+        // Remove selected nodes
+        setNodes((nds) => nds.filter((n) => !selectedNodeIds.includes(n.id)));
+
+        // Remove edges connected to deleted nodes
+        setEdges((eds) =>
+            eds.filter((e) =>
+                !selectedNodeIds.includes(e.source) && !selectedNodeIds.includes(e.target)
+            )
+        );
+
+    }, [nodes, edges, isEraserActive]);
 
 
     const NodeClicked = (event, node) => {
-        setnodeSelect(node.id);
+        if (isEraserActive) {
+            // Delete clicked node and its connected edges
+            setNodes((nds) => nds.filter((n) => n.id !== node.id));
+            setEdges((eds) => eds.filter((e) => e.source !== node.id && e.target !== node.id));
+            // Eraser remains active until user changes
+        } else {
+            setnodeSelect(node.id);
+        }
     };
 
 
@@ -184,7 +242,7 @@ export default function Projectpage() {
 
         const nodeConnections = {};
 
-        // connection array
+
         edges.forEach(edge => {
             if (!nodeConnections[edge.source]) {
                 nodeConnections[edge.source] = [];
@@ -192,13 +250,22 @@ export default function Projectpage() {
             nodeConnections[edge.source].push(edge.target);
         });
 
-        const DataSend = data.map(({ id, data, position }) => ({
+        const nodeDataArray = data.map(({ id, data, position }) => ({
             id,
             label: data.label,
             shape: data.shape,
             position,
             connections: nodeConnections[id] || []
         }));
+    
+    
+        const DataSend = {
+            data: nodeDataArray,
+            language: {
+                name: selectedLang === "cpp" ? "c++" : selectedLang
+            }
+        };
+        
 
         try {
             const res = await axios.post("http://localhost:3000/recieve", DataSend);
@@ -242,32 +309,78 @@ export default function Projectpage() {
     }
 
 
+
     return (
         <>
 
-            <div>
+            <div className='relative mainbody bg-white'>
+
                 <Navbar
                     setSelectedShape={setSelectedShape}
                     setShape={setshape}
                     sendFlowBackend={sendFlowBackend}
-                    setpressdelete={setpressdelete}
                     setActiveTool={setActiveTool}
+                    setIsEraserActive={setIsEraserActive}
                     activeTool={activeTool}
+                    setShowEditor={setShowEditor}
+                    showEditor={showEditor}
                 />
 
 
-                <div style={{ width: "100%", height: "91vh", padding: "1px" }} >
+                <div className={`${showEditor ? "editbox2" : ""} editorBox absolute flex flex-col gap-3 bg-white shadow-2xl w-[40%] h-[80%] z-20 rounded-2xl top-[10%]  p-4 transition-position duration-400 ease-in-out`}>
+
+                    <div className='bg-gray-100 rounded-lg p-2'>
+                        <select
+                            onClick={changetoolpath}
+                            name="Language"
+                            id="lang-select"
+                            value={selectedLang}
+                            onChange={(e) => setSelectedLang(e.target.value)}
+                            className='w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400'
+                        >
+                            {selectedLang === "cpp" && (
+                                <option value="cpp" hidden>{selectedLang}</option>
+                            )}
+                            {
+                                langs.map((lang) => {
+                                    return (
+                                        <option value={lang}>{lang}</option>
+                                    )
+                                })
+                            }
+
+                        </select>
+                    </div>
+
+                    <div className='relative w-full flex-1 rounded-lg overflow-hidden'>
+                        <Editor
+                            theme="vs-dark"
+                            height="100%"
+                            width="100%"
+                            language={selectedLang}
+                            defaultValue="// Start coding here..."
+                            className='rounded-lg'
+                        />
+                    </div>
+                </div>
+
+
+
+                <div style={{ width: "100%", height: "89vh", padding: "1px" }} >
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
+                        selectNodesOnDrag={true}
+                        selectionOnDrag
+                        onNodesChange={onNodesChangeWrapper}
+                        onEdgesChange={onEdgesChangeWrapper}
                         onConnect={onConnect}
                         onPaneClick={makeNode}
                         nodeTypes={nodetype}
                         onNodeDoubleClick={onDoubleClick}
                         onNodeClick={NodeClicked}
                         panOnDrag={activeTool !== "pointer"}
+                        onEdgeClick={onEdgeClick}
                     >
                         <MiniMap />
                         <Background variant='plain' />
@@ -278,4 +391,6 @@ export default function Projectpage() {
         </>
     )
 }
+
+
 
