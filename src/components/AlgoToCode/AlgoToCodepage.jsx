@@ -24,7 +24,7 @@ export default function AlgoToCodepage() {
 
     const sendalgobackend = async () => {
         try {
-            const res = await axios.post("http://localhost:3000/algorecieve", {
+            const res = await axios.post("https://sketchcodebackend.onrender.com/algorecieve", {
                 algo: inputval,
                 language: selecteLang
             })
